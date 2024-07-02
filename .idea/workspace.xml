@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1a27066d-16d4-41c5-9cbb-04c25cc12730" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/nest-project/src/cats/cats.dto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nest-project/src/common/dto/exception.dto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nest-project/src/common/dto/response.dto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nest-project/src/common/exceptions/common.exception.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nest-project/src/common/exceptions/error-code.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nest-project/src/common/exceptions/global.exception.handler.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nest-project/src/common/interceptors/response.interceptor.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nest-project/src/common/pipes/positiveInt.pipe.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nest-project/src/http-exception.filter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/nestJS.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nest-project" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/letsStart/src/cats.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/letsStart/src/cats.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -88,7 +84,7 @@
       <option name="presentableId" value="Default" />
       <updated>1719839875544</updated>
       <workItem from="1719839876584" duration="7196000" />
-      <workItem from="1719847800867" duration="13639000" />
+      <workItem from="1719847800867" duration="13994000" />
     </task>
     <servers />
   </component>
