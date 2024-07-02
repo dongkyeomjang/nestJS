@@ -11,6 +11,7 @@ export const readAllCats = (res:Response) => {
             }
         });
     } catch (error) {
+        if(error instanceof Error)
         res.status(400).send({
             success : false,
             error : error.message,
@@ -32,6 +33,7 @@ export const readCat = (req:Request,res:Response) => {
             }
         });
     } catch (error) {
+        if(error instanceof Error)
         res.status(404).send({
             success: false,
             error: error.message,
@@ -49,6 +51,7 @@ export const CreateCat = (req:Request,res:Response) => {
             data: {}
         });
     } catch(error) {
+        if(error instanceof Error)
         res.status(400).send({
             success: false,
             error : error.message,
@@ -79,6 +82,7 @@ export const updateCatAll = (req:Request,res:Response) => {
         });
 
     } catch(error){
+        if(error instanceof Error)
         res.status(404).send({
             success: false,
             error: error.message,
@@ -105,6 +109,7 @@ export const updateCatPartial = (req:Request,res:Response) => {
             data: { result }
         });
     } catch(error) {
+        if(error instanceof Error)
         res.status(404).send({
             success: false,
             error : error.message,
@@ -124,6 +129,7 @@ export const deleteCat = (req:Request,res:Response) => {
             data: newCats,
         });
     } catch(error) {
+        if(error instanceof Error)
         res.status(404).send({
             success: false,
             error : error.message,
