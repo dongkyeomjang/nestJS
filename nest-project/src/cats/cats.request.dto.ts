@@ -1,20 +1,20 @@
 import {Cats} from "./cats.entity";
-export class CatsDto {
+export class CatsRequestDto {
     id: number;
     name: string;
     age: number;
     species: string;
     isCute: boolean;
-    friends: Cats[];
+    friendsId: number[];
 
-    static fromEntity(cat: Cats, friends: Cats[]) : CatsDto {
+    static fromEntity(cat: Cats, friendsId: number[]) : CatsDto {
         return {
             id: cat.id,
             name: cat.name,
             age: cat.age,
             species: cat.species,
             isCute: cat.isCute,
-            friends: friends
+            friendsId: friendsId
         }
     }
 }

@@ -3,9 +3,22 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CatsModule } from './cats/cats.module';
 import {LoggerMiddleware} from "./common/middlewares/logger/logger.middleware";
+import {TypeOrmModule} from "@nestjs/typeorm";
+import {Cats} from "./cats/cats.entity";
 
 @Module({
-  imports: [CatsModule],
+  imports: [CatsModule,
+      TypeOrmModule.forRoot({
+        type: 'mariadb',
+        host: 'localhost',
+        port: 3306,
+        username: 'root',
+        password: '0304',
+        database: 'cats',
+        entities: [Cats],
+        synchronize: true,
+      })
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
