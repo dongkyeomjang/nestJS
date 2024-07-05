@@ -64,17 +64,57 @@ export class CatsService {
                     return new CatsFriends(cat, friend);
                 }
             ))
-
         }
+        return CatsDto.fromEntity(cat, friendsOfCat);
     }
 
-    async updateCat(catId: number, catsDto: CatsDto) : Promise<CatsDto> {
+    async updateCat(catId: number, catRequestDto: CatsRequestDto) : Promise<CatsDto> {
         let cat : Cats = await this.catsRepository.findById(catId);
         if (cat === undefined) {
             throw new CommonException(ErrorCode.NOT_FOUND_CATS);
         }
-        cat = Object.assign(cat, catsDto);
-        return CatsDto.fromEntity(await this.catsRepository.save(cat));
+        let friends = await this.friendRepository.findAllByCat(cat);
+        if (friends !== undefined) {
+            let friendsFormOfCats : Cats[] = await Promise.all(
+                friends.map(
+                    friend =>  {
+                        return this.catsRepository.findById(friend.friend.id)
+                    }
+                )
+            );
+            if (!(catRequestDto.friendsId === undefined)) {
+                await this.friendRepository.delete(
+                    friends.map(friend => friend.id)
+                );
+                let newFriends : Cats[] = await Promise.all(
+                    catRequestDto.friendsId.map(
+                        friendId => {
+                            return this.catsRepository.findById(friendId);
+                        }
+                    )
+                )
+                this.friendRepository.save(newFriends.map(
+                    friend => {
+                        return new CatsFriends(cat, friend);
+                    }
+                ));
+            }
+        }
+        if (catRequestDto.age !== undefined) {
+            cat.age = catRequestDto.age;
+        }
+        if (catRequestDto.name !== undefined) {
+            cat.name = catRequestDto.name;
+        }
+        if (catRequestDto.species !== undefined) {
+            cat.species = catRequestDto.species;
+        }
+        if (catRequestDto.isCute !== undefined) {
+            cat.isCute = catRequestDto.isCute;
+        }
+        cat = await this.catsRepository.save(cat);
+
+        return CatsDto.fromEntity(cat, friends.map(friend => friend.friend));
     }
 
     async deleteCat(catId: number) : Promise<void> {
@@ -82,6 +122,9 @@ export class CatsService {
         if (cat === undefined) {
             throw new CommonException(ErrorCode.NOT_FOUND_CATS);
         }
+        await this.friendRepository.delete(
+            (await this.friendRepository.findAllByCat(cat)).map(friend => friend.id)
+        );
         await this.catsRepository.delete(catId);
     }
 }

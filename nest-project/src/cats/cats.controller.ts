@@ -14,6 +14,7 @@ import {HttpExceptionFilter} from "../http-exception.filter";
 import {PositiveIntPipe} from "../common/pipes/positiveInt.pipe";
 import {ResponseInterceptor} from "../common/interceptors/response.interceptor";
 import {CatsDto} from "./cats.dto";
+import {CatsRequestDto} from "./cats.request.dto";
 
 @Controller("/cats")
 @UseInterceptors(ResponseInterceptor)
@@ -32,13 +33,13 @@ export class CatsController {
     }
 
     @Post()
-    createCat(@Body() catDto: CatsDto) : ResponseDto<any> {
-        return ResponseDto.created(this.catsService.createCat(catDto));
+    createCat(@Body() catRequestDto: CatsRequestDto) : ResponseDto<any> {
+        return ResponseDto.created(this.catsService.createCat(catRequestDto));
     }
 
     @Patch('/:id')
-    patchCat(@Param('id', ParseIntPipe, PositiveIntPipe) catId : number, @Body() catDto: CatsDto) : ResponseDto<any> {
-        return ResponseDto.created(this.catsService.updateCat(catId, catDto));
+    patchCat(@Param('id', ParseIntPipe, PositiveIntPipe) catId : number, @Body() catRequestDto: CatsRequestDto) : ResponseDto<any> {
+        return ResponseDto.created(this.catsService.updateCat(catId, catRequestDto));
     }
 
     @Delete('/:id')

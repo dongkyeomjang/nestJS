@@ -7,7 +7,7 @@ export class CatsRequestDto {
     isCute: boolean;
     friendsId: number[];
 
-    static fromEntity(cat: Cats, friendsId: number[]) : CatsDto {
+    static fromEntity(cat: Cats, friendsId: number[]) : CatsRequestDto {
         return {
             id: cat.id,
             name: cat.name,
