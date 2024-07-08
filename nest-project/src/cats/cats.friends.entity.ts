@@ -1,8 +1,7 @@
-import {Injectable} from "@nestjs/common";
-import {Column, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Cats} from "./cats.entity";
 
-@Injectable()
+@Entity()
 export class CatsFriends {
     @PrimaryGeneratedColumn()
     id: number;

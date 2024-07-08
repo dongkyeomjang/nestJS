@@ -5,6 +5,7 @@ import { CatsModule } from './cats/cats.module';
 import {LoggerMiddleware} from "./common/middlewares/logger/logger.middleware";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {Cats} from "./cats/cats.entity";
+import {CatsFriends} from "./cats/cats.friends.entity";
 
 @Module({
   imports: [CatsModule,
@@ -15,7 +16,7 @@ import {Cats} from "./cats/cats.entity";
         username: 'root',
         password: '0304',
         database: 'cats',
-        entities: [Cats],
+        entities: [Cats, CatsFriends],
         synchronize: true,
       })
   ],

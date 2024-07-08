@@ -5,7 +5,7 @@ export class CatsDto {
     age: number;
     species: string;
     isCute: boolean;
-    friends: Cats[];
+    friends: string[];
 
     static fromEntity(cat: Cats, friends: Cats[]) : CatsDto {
         return {
@@ -14,7 +14,7 @@ export class CatsDto {
             age: cat.age,
             species: cat.species,
             isCute: cat.isCute,
-            friends: friends
+            friends: friends.map(friend => friend.name)
         }
     }
 }

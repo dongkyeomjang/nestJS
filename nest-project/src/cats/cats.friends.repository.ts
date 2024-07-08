@@ -5,7 +5,7 @@ import {Cats} from "./cats.entity";
 
 @Injectable()
 export class CatsFriendsRepository extends Repository<CatsFriends>{
-    constructor(private dataSource: DataSource){
+    constructor(private readonly dataSource: DataSource){
         super(CatsFriends, dataSource.createEntityManager());
     }
     async findAllByCat(cat: Cats): Promise<CatsFriends[]>{

@@ -1,4 +1,4 @@
-import {Injectable, UseFilters} from '@nestjs/common';
+import {Injectable, Logger, UseFilters} from '@nestjs/common';
 import {CatsDto} from "./cats.dto";
 import {CommonException} from "../common/exceptions/common.exception";
 import {ErrorCode} from "../common/exceptions/error-code";
@@ -19,20 +19,21 @@ export class CatsService {
 
     async getAllCats() : Promise<CatsDto[]> {
         const cats : Cats[] = await this.catsRepository.findAll();
-        if(cats === undefined) {
+        if (cats === undefined || cats.length === 0) {
             throw new CommonException(ErrorCode.NOT_FOUND_CATS);
         }
         const catsDtos : CatsDto[] = [];
-        cats.map(async cat => {
+        await Promise.all(cats.map(async cat => {
             let friends : Cats[] = await this.friendRepository.findAllByCat(cat).then(
                 catFriends => {
                     return catFriends.map(catFriends => catFriends.friend);
                 }
-            );
+            ).catch(() => []);
             catsDtos.push(CatsDto.fromEntity(cat, friends));
-        });
+        }));
         return catsDtos;
     }
+
     async getCatById(catId: number) : Promise<CatsDto> {
         const cat: Cats = await this.catsRepository.findById(catId);
         if(cat === undefined){
@@ -42,24 +43,27 @@ export class CatsService {
             catFriends => {
                 return catFriends.map(catFriends => catFriends.friend);
             }
-        );
+        ).catch(() => []);
         return CatsDto.fromEntity(cat, friends);
     }
 
     async createCat(catsRequestDto: CatsRequestDto) : Promise<CatsDto> {
         let friendsOfCat : Cats[] = [];
-        for (const friendId of catsRequestDto.friendsId) {
-            const friendOfCat : Cats = await this.catsRepository.findById(friendId);
-            if (friendOfCat === undefined) {
-                throw new CommonException(ErrorCode.NOT_FOUND_CATS);
-            }
-            friendsOfCat.push(friendOfCat);
-        }
         const cat : Cats = await this.catsRepository.save(
             new Cats(catsRequestDto.name, catsRequestDto.age, catsRequestDto.species, catsRequestDto.isCute)
         );
-        if(!(friendsOfCat.length === 0)){
-            this.friendRepository.save(friendsOfCat.map(
+
+        if(catsRequestDto.friendsId !== undefined) {
+            await Promise.all(catsRequestDto.friendsId.map(
+                async friendId => {
+                    const friendOfCat : Cats = await this.catsRepository.findById(friendId);
+                    if (friendOfCat === undefined) {
+                        throw new CommonException(ErrorCode.NOT_FOUND_CATS);
+                    }
+                    friendsOfCat.push(friendOfCat);
+                }
+            ));
+            await this.friendRepository.save(friendsOfCat.map(
                 friend => {
                     return new CatsFriends(cat, friend);
                 }
@@ -93,7 +97,7 @@ export class CatsService {
                         }
                     )
                 )
-                this.friendRepository.save(newFriends.map(
+                await this.friendRepository.save(newFriends.map(
                     friend => {
                         return new CatsFriends(cat, friend);
                     }
